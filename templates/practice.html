@@ -1,0 +1,66 @@
+ <!DOCTYPE html>
+<html>
+<head>
+    <title>Student Form</title>
+</head>
+<body>
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    <input type="text"
+           name="student_name"
+           placeholder="Enter Student Name">
+
+    <br><br>
+
+    <select name="school">
+
+        <option value="">
+            Select School
+        </option>
+
+        {% for school in schools %}
+
+        <option value="{{ school.id }}">
+
+            {{ school.school_name }}
+
+        </option>
+
+        {% endfor %}
+
+    </select>
+
+    <br><br>
+
+    <button type="submit">
+        Save
+    </button>
+
+</form>
+
+
+</body>
+</html>
+
+
+
+<h2>Student List</h2>
+
+<table border="20">
+  <tr>
+    <th>Name</th>
+    <th>Age</th>
+    <th>School Name (FK)</th>
+  </tr>
+
+  {% for student in student %}
+  <tr>
+    <td>{{ student.student_name }}</td>
+    <td>{{ student.age }}</td>
+    <td>{{ student.school.school_name }}</td> <!-- Accessing FK data -->
+  </tr>
+  {% endfor %}
+</table>

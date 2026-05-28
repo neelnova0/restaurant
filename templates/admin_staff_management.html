@@ -1,0 +1,220 @@
+{% load static %}
+{% include 'header.html' %}
+
+<style>
+    /* Premium Hover & Interactive Styles */
+    .admin-card {
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        border: 1px solid #f1f1f1 !important;
+        border-radius: 12px !important;
+    }
+    .admin-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.06) !important;
+    }
+    
+    .attendance-log-row {
+        transition: all 0.25s ease;
+        border-radius: 8px;
+    }
+    .attendance-log-row:hover {
+        background: #fdfaf5 !important;
+        border-color: var(--gold-light) !important;
+        transform: translateX(4px);
+    }
+    
+    .pulse-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 5px;
+    }
+    .pulse-dot.green {
+        background-color: #28a745;
+        box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7);
+        animation: pulse-green-glow 2s infinite;
+    }
+    
+    @keyframes pulse-green-glow {
+        0% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.6); }
+        70% { transform: scale(1.1); box-shadow: 0 0 0 6px rgba(40, 167, 69, 0); }
+        100% { transform: scale(0.9); box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
+    }
+    
+    /* Scrollbar Styling for History Card */
+    .custom-scroll-container::-webkit-scrollbar {
+        width: 6px;
+    }
+    .custom-scroll-container::-webkit-scrollbar-track {
+        background: #fafafa;
+        border-radius: 10px;
+    }
+    .custom-scroll-container::-webkit-scrollbar-thumb {
+        background: #e0e0e0;
+        border-radius: 10px;
+    }
+    .custom-scroll-container::-webkit-scrollbar-thumb:hover {
+        background: var(--gold);
+    }
+</style>
+
+<div class="section-pad" style="padding-top:10rem; min-height: 80vh; background-color: #fcfcfc;">
+  <div class="container">
+    
+    <!-- Title and Clock Header -->
+    <div class="row mb-4">
+        <div class="col-12" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div>
+                <h2 class="section-title" style="font-size:2.5rem; margin-bottom: 0.5rem; display: inline-block;">Staff & Leaves Management</h2>
+                <p style="color:var(--text-body);font-size:1.1rem; margin: 0;">Register new staff members, approve leaves, and track shift login/logout logs.</p>
+            </div>
+            <!-- Live Ticking Clock -->
+            <div style="background: rgba(197, 168, 128, 0.1); color: var(--dark); border: 1px solid var(--gold); border-radius: 50px; padding: 0.5rem 1.25rem; font-size: 0.95rem; font-weight: 600; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: 0 4px 15px rgba(197, 168, 128, 0.05);">
+                <i class="bi bi-clock-fill" style="color: var(--gold); animation: pulse 2s infinite;"></i>
+                <span id="liveClockTime">--:--:-- --</span>
+                <span style="color: var(--text-muted); font-size: 0.8rem; font-weight: 500; border-left: 1px solid #ddd; padding-left: 0.5rem; margin-left: 0.25rem;">Live</span>
+            </div>
+        </div>
+        
+        <!-- Alerts and Messages -->
+        <div class="col-12 mt-3">
+            {% if messages %}
+              <div class="messages">
+                  {% for message in messages %}
+                  <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="background-color: var(--gold-light); color: var(--dark); border-left: 4px solid var(--gold); padding: 1rem; border-radius: 8px;">
+                      {{ message }}
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="position: absolute; right: 15px; top: 15px; background: transparent; border: none; font-size: 1.2rem; cursor: pointer;">&times;</button>
+                  </div>
+                  {% endfor %}
+              </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="row g-5">
+        <!-- Sidebar / Register New Staff member -->
+        <div class="col-lg-4">
+            <div class="admin-card" style="background: #fff; padding: 2rem; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-top: 4px solid var(--gold); margin-bottom: 2rem;">
+                <h4 style="font-family: var(--font-display); font-size: 1.4rem; margin-bottom: 1.5rem; font-weight: 600; color: var(--dark);">Register Staff/Admin</h4>
+                <form method="POST" action="{% url 'admin_staff_management' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="register_staff">
+                    
+                    <div class="mb-3">
+                        <label class="form-label" style="font-size: 0.85rem; font-weight: 600; color: var(--dark);">Username</label>
+                        <input type="text" name="username" class="form-control" placeholder="e.g. staff_john" style="border-radius: 6px; font-size: 0.9rem;" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" style="font-size: 0.85rem; font-weight: 600; color: var(--dark);">Email Address</label>
+                        <input type="email" name="email" class="form-control" placeholder="john@example.com" style="border-radius: 6px; font-size: 0.9rem;" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" style="font-size: 0.85rem; font-weight: 600; color: var(--dark);">Password</label>
+                        <input type="password" name="password" class="form-control" placeholder="••••••••" style="border-radius: 6px; font-size: 0.9rem;" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" style="font-size: 0.85rem; font-weight: 600; color: var(--dark);">Role</label>
+                        <select name="role" class="form-select" style="border-radius: 6px; font-size: 0.9rem;" required>
+                            <option value="staff">Staff Member</option>
+                            <option value="admin">Admin / Superuser</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-gold" style="width: 100%; border-radius: 50px; padding: 0.75rem; font-size: 0.88rem; font-weight: 600; box-shadow: 0 4px 15px rgba(197,168,128,0.2);">
+                        <i class="bi bi-person-plus-fill me-1.5"></i> Register Member
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Main Area / Leave Requests and Attendance Session Logs -->
+        <div class="col-lg-8">
+            <!-- Leave Requests -->
+            <div class="admin-card" style="background: #fff; padding: 2rem; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-top: 4px solid var(--gold); margin-bottom: 2rem;">
+                <h4 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 1.5rem; font-weight: 600; color: var(--dark);">Leave Requests</h4>
+                
+                {% for leave in leaves %}
+                <div class="mb-3 pb-3" style="border-bottom: 1px solid #eee;">
+                    <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+                        <div>
+                            <strong style="font-size: 1.05rem; color: var(--dark);">{{ leave.staff_member.username }}</strong><br>
+                            <span style="color:var(--text-muted); font-size: 0.85rem;"><i class="bi bi-calendar-range me-1.5"></i>{{ leave.start_date|date:"M d, Y" }} to {{ leave.end_date|date:"M d, Y" }}</span>
+                        </div>
+                        <div>
+                            {% if leave.status == 'Pending' %}
+                            <div style="display: flex; gap: 0.5rem;">
+                                <form method="POST" action="{% url 'admin_staff_management' %}" style="display:inline-block; margin: 0;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="accept_leave">
+                                    <input type="hidden" name="leave_id" value="{{ leave.id }}">
+                                    <button type="submit" class="btn btn-sm" style="background:#28a745; color:#fff; border-radius:50px; padding: 0.35rem 1rem; font-size:0.78rem; font-weight: 600; border: none; box-shadow: 0 4px 10px rgba(40,167,69,0.15);">Accept</button>
+                                </form>
+                                <form method="POST" action="{% url 'admin_staff_management' %}" style="display:inline-block; margin: 0;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="reject_leave">
+                                    <input type="hidden" name="leave_id" value="{{ leave.id }}">
+                                    <button type="submit" class="btn btn-sm" style="background:#dc3545; color:#fff; border-radius:50px; padding: 0.35rem 1rem; font-size:0.78rem; font-weight: 600; border: none; box-shadow: 0 4px 10px rgba(220,53,69,0.15);">Reject</button>
+                                </form>
+                            </div>
+                            {% else %}
+                                <span class="badge {% if leave.status == 'Approved' %}bg-success{% else %}bg-danger{% endif %}" style="padding: 0.45rem 0.85rem; border-radius: 50px; font-size: 0.78rem; font-weight: 600;">{{ leave.status }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <p style="margin: 0.75rem 0 0 0; font-size: 0.9rem; font-style: italic; color: var(--text-body); background: #fafafa; padding: 0.75rem; border-radius: 8px; border: 1px solid #eee; line-height: 1.5;">"{{ leave.reason }}"</p>
+                </div>
+                {% empty %}
+                <p style="color: var(--text-muted); font-size: 0.9rem; text-align: center; padding: 2rem 0;">No leave requests pending.</p>
+                {% endfor %}
+            </div>
+
+            <!-- Staff Attendance Logs -->
+            <div class="admin-card" style="background: #fff; padding: 2rem; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-top: 4px solid var(--dark);">
+                <h4 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 1.5rem; font-weight: 600; color: var(--dark);">Staff Attendance History</h4>
+                
+                <div class="custom-scroll-container" style="max-height: 500px; overflow-y: auto; padding-right: 8px;">
+                    {% for att in attendances %}
+                    <div class="attendance-log-row" style="background: #fafafa; border: 1px solid #eee; border-radius: 8px; padding: 0.9rem 1.2rem; margin-bottom: 0.75rem; display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong style="color: var(--dark); font-size: 1.05rem;">{{ att.staff_member.username }}</strong><br>
+                            <span style="color: var(--text-muted); font-size: 0.8rem;"><i class="bi bi-calendar-event me-1.5"></i>{{ att.date|date:"M d, Y" }}</span>
+                        </div>
+                        <div style="text-align: right;">
+                            <span style="color: #28a745; font-size: 0.85rem; font-weight: 700; display: block;"><i class="bi bi-box-arrow-in-right me-1"></i>{{ att.login_time|date:"h:i A"|default:"-" }}</span>
+                            {% if att.is_logged_in %}
+                                <span class="badge" style="background: rgba(40, 167, 69, 0.1); color: #28a745; border: 1px solid rgba(40, 167, 69, 0.2); font-size: 0.75rem; font-weight: 700; padding: 0.25rem 0.6rem; border-radius: 4px; display: inline-block; margin-top: 0.25rem;"><span class="pulse-dot green"></span>Active</span>
+                            {% else %}
+                                <span style="color: #dc3545; font-size: 0.85rem; font-weight: 700; display: block; margin-top: 0.15rem;"><i class="bi bi-box-arrow-left me-1"></i>{{ att.logout_time|date:"h:i A"|default:"-" }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p style="color: var(--text-muted); font-size: 0.9rem; text-align: center; padding: 3rem 0;">No attendance logs registered.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+  </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Live Clock Ticker
+        function updateLiveClock() {
+            var now = new Date();
+            var options = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+            var timeString = now.toLocaleTimeString('en-US', options);
+            var clockEl = document.getElementById('liveClockTime');
+            if (clockEl) {
+                clockEl.innerText = timeString;
+            }
+        }
+        setInterval(updateLiveClock, 1000);
+        updateLiveClock();
+    });
+</script>
+
+{% include 'footer.html' %}

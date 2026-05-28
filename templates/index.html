@@ -1,0 +1,178 @@
+{% load static %}
+
+{% include 'header.html' %}
+
+<section class="hero" id="home">
+  <div class="hero-bg" {% if hero.bg_image %}style="background-image: url('{{ hero.bg_image.url }}');"{% endif %}></div>
+  <div class="hero-overlay"></div>
+  <div class="container">
+    <div class="hero-content">
+      <span class="hero-eyebrow">{{ hero.eyebrow }}</span>
+      <h1 class="hero-title">
+        {{ hero.title }}<br>
+        <em>{{ hero.title_italic }}</em>
+      </h1>
+      <p class="hero-subtitle">
+        {{ hero.subtitle }}
+      </p>
+      <div class="hero-actions">
+        <a href="{{ hero.btn1_url }}" class="btn-gold">{{ hero.btn1_text }}</a>
+        <a href="{{ hero.btn2_url }}" class="btn-outline-gold">{{ hero.btn2_text }}</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll-hint">
+    <div class="scroll-mouse"><div class="scroll-dot"></div></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ▒▒ STATS BAR ▒▒ -->
+<section class="stats-bar">
+  <div class="container">
+    <div class="row g-4 text-center">
+      {% for stat in stats %}
+      <div class="col-6 col-md-3">
+        <span class="stat-num" data-target="{{ stat.target_number }}" data-suffix="{{ stat.suffix }}">{{ stat.target_number }}{{ stat.suffix }}</span>
+        <span class="stat-label">{{ stat.label }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ▒▒ FEATURED DISHES ▒▒ -->
+<section class="section-pad featured-section" id="menu">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <span class="section-label">Chef's Selection</span>
+      <h2 class="section-title">Our <span>Signature</span> Dishes</h2>
+      <div class="section-divider mx-auto"></div>
+      <p class="mt-3 text-muted" style="max-width:520px;margin:0 auto;font-size:0.95rem;">From slow-braised classics to contemporary Italian flair — every plate is a labour of love.</p>
+    </div>
+
+    <div class="row g-4">
+      {% for dish in dishes %}
+      <div class="col-md-6 col-lg-4 reveal reveal-delay-{{ forloop.counter }}">
+        <div class="dish-card">
+          <div class="dish-card-img">
+            {% if dish.image %}
+            <img src="{{ dish.image.url }}" alt="{{ dish.name }}" loading="lazy" />
+            {% endif %}
+            {% if dish.badge %}
+            <span class="dish-badge">{{ dish.badge }}</span>
+            {% endif %}
+          </div>
+          <div class="dish-card-body">
+            <h3 class="dish-name">{{ dish.name }}</h3>
+            <p class="dish-desc">{{ dish.description }}</p>
+            <div class="dish-footer">
+              <span class="dish-price">{{ dish.price }}</span>
+              <button class="btn-order">Order Now</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="text-center mt-5 reveal">
+      <a href="/menu" class="btn-gold">Explore Full Menu</a>
+    </div>
+  </div>
+</section>
+
+<!-- ▒▒ ABOUT (Home) ▒▒ -->
+<section class="section-pad about-home" id="about">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-5 reveal">
+        <div class="about-img-wrap">
+          <div class="about-badge">
+            <span class="about-badge-num">{{ about.badge_num }}</span>
+            <span class="about-badge-text">{{ about.badge_text|linebreaksbr }}</span>
+          </div>
+          {% if about.main_image %}
+          <img src="{{ about.main_image.url }}" alt="Restaurant Interior" class="about-img-main" loading="lazy" />
+          {% endif %}
+          {% if about.accent_image %}
+          <img src="{{ about.accent_image.url }}" alt="Dining Experience" class="about-img-accent" loading="lazy" />
+          {% endif %}
+        </div>
+      </div>
+      <div class="col-lg-7 reveal reveal-delay-2">
+        <span class="section-label">{{ about.label }}</span>
+        <h2 class="section-title">{{ about.title }} <span>{{ about.title_highlight }}</span></h2>
+        <div class="section-divider left"></div>
+        <p style="color:var(--text-body);line-height:1.9;margin-bottom:1.25rem;">
+          {{ about.description1 }}
+        </p>
+        <p style="color:var(--text-body);line-height:1.9;margin-bottom:2rem;">
+          {{ about.description2 }}
+        </p>
+        <div class="d-flex gap-3 flex-wrap">
+          <a href="/about" class="btn-gold">Our Story</a>
+          <a href="/reservation" class="btn-outline-gold">Book a Table</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ▒▒ TESTIMONIALS ▒▒ -->
+<section class="section-pad testimonials-section" id="testimonials">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <span class="section-label">Guest Reviews</span>
+      <h2 class="section-title" style="color:var(--white);">What Our <span>Guests</span> Say</h2>
+      <div class="section-divider mx-auto"></div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-lg-8">
+        {% for review in testimonials %}
+        <div class="testimonial-slide">
+          <div class="testimonial-card reveal">
+            <div class="testimonial-quote-icon">"</div>
+            <div class="stars">
+              {% if review.stars == 5 %}★★★★★{% elif review.stars == 4 %}★★★★{% elif review.stars == 3 %}★★★{% elif review.stars == 2 %}★★{% else %}★{% endif %}
+            </div>
+            <p class="testimonial-text">
+              "{{ review.text }}"
+            </p>
+            <div class="testimonial-author">
+              {% if review.author_image %}
+              <img src="{{ review.author_image.url }}" alt="{{ review.author_name }}" class="testimonial-avatar" />
+              {% endif %}
+              <div>
+                <span class="author-name">{{ review.author_name }}</span>
+                <span class="author-title">{{ review.author_title }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
+        <div class="carousel-controls">
+          <button class="carousel-btn" id="testimonialPrev" aria-label="Previous"><i class="bi bi-arrow-left"></i></button>
+          <button class="carousel-btn" id="testimonialNext" aria-label="Next"><i class="bi bi-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ▒▒ CTA BANNER ▒▒ -->
+<section class="section-pad-sm" style="background:linear-gradient(135deg, var(--gold-dark), var(--gold));">
+  <div class="container text-center">
+    <h2 style="font-family:var(--font-display);color:var(--black);font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:0.5rem;" class="reveal">
+      {{ cta.title }}
+    </h2>
+    <p style="color:rgba(0,0,0,0.65);margin-bottom:2rem;font-size:0.95rem;" class="reveal reveal-delay-1">
+      {{ cta.subtitle }}
+    </p>
+    <a href="{{ cta.btn_url }}" class="btn-dark-gold reveal reveal-delay-2">{{ cta.btn_text }}</a>
+  </div>
+</section>
+
+{% include 'footer.html' %}

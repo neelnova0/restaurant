@@ -1,0 +1,73 @@
+{% load static %}
+
+{% include 'header.html' %}
+
+<!-- PAGE BANNER -->
+<section class="page-banner">
+  <div class="page-banner-bg" {% if menu_page.banner_image %}style="background-image:url('{{ menu_page.banner_image.url }}');"{% endif %}></div>
+  <div class="page-banner-overlay"></div>
+  <div class="container-fluid page-banner-content">
+    <h1>{{ menu_page.banner_title }} <em style="font-style:italic;color:var(--gold);">{{ menu_page.banner_highlight }}</em></h1>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a href="/">Home</a></li>
+        <li class="breadcrumb-item active">Menu</li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<!-- MENU SECTION -->
+<section class="section-pad bg-off-white">
+  <div class="container">
+    {% for category in categories %}
+    <div class="menu-category-block mb-5 reveal">
+      <div class="text-center mb-4">
+        <h2 class="section-title"><span>{{ category.name }}</span></h2>
+        <div class="section-divider mx-auto"></div>
+      </div>
+
+      <div class="row g-4">
+        {% for item in category.items.all %}
+        <div class="col-md-6 reveal reveal-delay-{{ forloop.counter }}">
+          <div class="menu-item-row d-flex gap-3 p-3 bg-white rounded shadow-sm">
+            {% if item.image %}
+            <div class="menu-item-img-wrap flex-shrink-0">
+              <img src="{{ item.image.url }}" alt="{{ item.name }}" class="menu-item-thumb">
+            </div>
+            {% endif %}
+            <div class="flex-grow-1">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <h4 class="menu-item-name mb-0">{{ item.name }} 
+                  {% if item.is_vegan %}<span class="badge bg-success" style="font-size:0.6rem;">Vegan</span>{% endif %}
+                  {% if item.is_spicy %}<span class="badge bg-danger" style="font-size:0.6rem;">Spicy</span>{% endif %}
+                </h4>
+                <span class="menu-item-price text-gold fw-bold">{{ item.price }}</span>
+              </div>
+              <p class="menu-item-desc text-muted mb-0" style="font-size:0.85rem;">{{ item.description }}</p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    {% empty %}
+    <div class="text-center py-5">
+      <p>Our menu is currently being updated. Please check back soon!</p>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section-pad-sm" style="background:var(--dark);">
+  <div class="container text-center">
+    <h2 style="font-family:var(--font-display);color:var(--white);font-size:clamp(1.6rem,3.5vw,2.5rem);margin-bottom:0.5rem;" class="reveal">
+      Ready to Dine with Us?
+    </h2>
+    <p style="color:rgba(253,250,244,0.55);margin-bottom:2rem;font-size:0.92rem;" class="reveal reveal-delay-1">Reserve your table for an unforgettable Italian evening.</p>
+    <a href="reservation.html" class="btn-gold reveal reveal-delay-2">Book a Table</a>
+  </div>
+</section>
+
+{% include 'footer.html' %}

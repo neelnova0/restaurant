@@ -1,0 +1,90 @@
+{% load static %}
+
+{% include 'header.html' %}
+
+
+<section class="section-pad">
+  <div class="container">
+    <div class="row align-items-center g-5">
+      <div class="col-lg-6 reveal">
+        <span class="section-label">{{ about_page.heritage_section_label }}</span>
+        <h2 class="section-title">{{ about_page.heritage_section_title }} <span>{{ about_page.heritage_title_highlight }}</span></h2>
+        <div class="section-divider left"></div>
+        <p style="color:var(--text-body);line-height:1.9;margin-bottom:1.2rem;">
+          {{ about_page.heritage_description }}
+        </p>
+        
+        <a href="{{ about_page.heritage_button_url }}" class="btn-gold">{{ about_page.heritage_button_text }}</a>
+      </div>
+      <div class="col-lg-6 reveal reveal-delay-2">
+        <div style="position:relative;">
+          {% if about_page.heritage_image %}
+          <img src="{{ about_page.heritage_image.url }}" alt="Restaurant Story" style="border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);width:100%;" />
+          {% endif %}
+          <div style="position:absolute;bottom:1.5rem;left:-1.5rem;background:var(--gold);padding:1.5rem;border-radius:var(--radius-lg);box-shadow:var(--shadow-gold);max-width:220px;" class="d-none d-lg-block">
+            <p style="font-family:var(--font-display);font-size:1rem;color:var(--black);font-style:italic;line-height:1.5;margin:0;">{{ about_page.quote }}</p>
+            <span style="font-size:0.72rem;font-weight:600;display:block;margin-top:0.6rem;color:rgba(0,0,0,0.6);">{{ about_page.quote_author }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MISSION & VISION -->
+<section class="section-pad bg-off-white">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <span class="section-label">{{ about_page.mv_section_label }}</span>
+      <h2 class="section-title">{{ about_page.mv_section_title }} <span>{{ about_page.mv_title_highlight }}</span></h2>
+      <div class="section-divider mx-auto"></div>
+    </div>
+    <div class="row g-4">
+    {% for x in mission_values %}
+      <div class="col-md-6 col-lg-3 reveal reveal-delay-1">
+        <div class="mission-card">
+          <div class="mission-icon"><i class="{{ x.icon }}"></i></div>
+          <h3>{{ x.title }}</h3>
+          <p>{{ x.description }}</p>
+        </div>
+      </div>
+    {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- MEET THE CHEFS -->
+<section class="section-pad">
+  <div class="container">
+    <div class="text-center mb-5 reveal">
+      <span class="section-label"></span>
+      <h2 class="section-title">{{ about_page.chef_section_title }} <span>{{ about_page.chef_section_highlight }}</span></h2>
+      <div class="section-divider mx-auto"></div>
+      <p class="mt-3 text-muted" style="max-width:500px;margin:0 auto;font-size:0.92rem;">{{ about_page.chef_section_description }}</p>
+    </div>
+    <div class="row g-4 justify-content-center">
+    {% for chef in chefs %}
+      <div class="col-6 col-md-4 col-lg-3 text-center reveal reveal-delay-1">
+        <div class="chef-card">
+          <div class="chef-img-wrap">
+            {% if chef.image %}
+            <img src="{{ chef.image.url }}" alt="{{ chef.name }}" class="chef-img" />
+            {% endif %}
+            <div class="chef-social">
+              <a href="{{ chef.instagram_url }}" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+              <a href="{{ chef.linkedin_url }}" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+            </div>
+          </div>
+          <h4 class="chef-name">{{ chef.name }}</h4>
+          <span class="chef-role">{{ chef.role }}</span>
+        </div>
+      </div>
+    {% endfor %}
+    </div>
+  </div>
+</section>
+
+
+<!-- footer -->
+
+{% include 'footer.html' %}

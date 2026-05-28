@@ -1,0 +1,65 @@
+{% load static %}
+
+<footer>
+  <div class="container">
+    <div class="row g-5">
+      <div class="col-lg-4">
+        <a class="navbar-brand mb-3 d-flex align-items-center gap-2" href="/" style="text-decoration:none;">
+          <div class="brand-logo">{{ mno.brand_logo }}</div>
+          <div>
+            <span class="brand-name">{{ mno.brand_name }}</span>
+            <span class="brand-tagline">{{ mno.brand_tagline }}</span>
+          </div>
+        </a>
+        <p class="footer-desc">{{ mno.brand_line }}</p>
+        <div class="social-icons mt-4">
+          <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a>
+        </div>
+      </div>
+
+      <div class="col-sm-6 col-lg-2">
+        <span class="footer-heading">Quick Links</span>
+        <ul class="footer-links">
+          {% for i in ghi %}
+          <li>
+            <a href="{{ i.url }}">{{ i.title }}</a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <div class="col-lg-4">
+        <span class="footer-heading">Visit Us</span>
+        <ul class="footer-contact">
+          {% for i in jkl %}
+          <li>
+            <span class="icon"><i class="bi bi-geo-alt-fill"></i></span>
+            <span>{{ i.address }}</span>
+          </li>
+          <li>
+            <span class="icon"><i class="bi bi-telephone-fill"></i></span>
+            <span>{{ i.phone }}</span>
+          </li>
+          <li>
+            <span class="icon"><i class="bi bi-clock-fill"></i></span>
+            <span>{{ i.timing }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container text-center">
+      <p>{{ mno.footer_bottom }}</p>
+    </div>
+  </div>
+</footer>
+
+<button class="back-to-top" id="backToTop"><i class="bi bi-chevron-up"></i></button>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'script.js' %}"></script>
+</body>
+</html>

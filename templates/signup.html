@@ -1,0 +1,104 @@
+{% load static %}
+
+{% include 'header.html' %}
+
+
+
+<!-- SIGNUP SECTION -->
+<div class="auth-page" style="align-items:flex-start;padding-top:5rem;">
+  <div class="auth-bg"></div>
+
+  <div class="auth-card" style="max-width:520px;margin:2rem auto;">
+    <!-- Logo -->
+    <div class="auth-logo">
+      <a href="/" style="display:inline-flex;align-items:center;gap:0.5rem;text-decoration:none;">
+        <div class="brand-logo" style="width:48px;height:48px;font-size:1.6rem;">B</div>
+        <div style="text-align:left;">
+          <span style="font-family:var(--font-display);font-size:1.4rem;font-weight:600;color:var(--dark);display:block;line-height:1.1;">Bella Notte</span>
+          <span style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);font-weight:400;">Fine Italian Dining</span>
+        </div>
+      </a>
+    </div>
+
+    <h2 class="auth-title">Create an Account</h2>
+    <p class="auth-subtitle">Join us and enjoy exclusive benefits, faster bookings and more.</p>
+
+    <form id="signupForm" method="POST" action="{% url 'signup' %}">
+      {% csrf_token %}
+      
+      {% if messages %}
+      <div class="messages mb-3">
+          {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" style="background-color: var(--gold-light); color: var(--dark); border-left: 4px solid var(--gold); padding: 1rem; margin-bottom: 1rem;">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close" style="position: absolute; right: 10px; top: 10px; background: transparent; border: none; font-size: 1.2rem; cursor: pointer;">&times;</button>
+          </div>
+          {% endfor %}
+      </div>
+      {% endif %}
+
+      <div class="row g-3">
+
+        <!-- Full Name -->
+        <div class="col-12">
+          <label class="form-label" for="signupName">Full Name</label>
+          <input type="text" class="form-control" id="signupName" name="signupName" placeholder="Your full name" required />
+        </div>
+
+        <!-- Email -->
+        <div class="col-12">
+          <label class="form-label" for="signupEmail">Email Address</label>
+          <input type="email" class="form-control" id="signupEmail" name="signupEmail" placeholder="you@example.com" required />
+        </div>
+
+        <!-- Phone -->
+        <div class="col-12">
+          <label class="form-label" for="signupPhone">Phone Number</label>
+          <input type="tel" class="form-control" id="signupPhone" name="signupPhone" placeholder="+91 98765 43210" />
+        </div>
+
+        <!-- Password -->
+        <div class="col-12">
+          <label class="form-label" for="signupPassword">Password</label>
+          <div class="password-wrapper">
+            <input type="password" class="form-control" id="signupPassword" name="signupPassword" placeholder="Min. 8 characters" style="padding-right:2.8rem;" required />
+            <button type="button" class="password-toggle" id="toggleSignupPassword" aria-label="Toggle password">
+              <i class="bi bi-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Confirm Password -->
+        <div class="col-12">
+          <label class="form-label" for="signupConfirm">Confirm Password</label>
+          <div class="password-wrapper">
+            <input type="password" class="form-control" id="signupConfirm" name="signupConfirm" placeholder="Repeat your password" style="padding-right:2.8rem;" required />
+            <button type="button" class="password-toggle" id="toggleConfirmPassword" aria-label="Toggle confirm password">
+              <i class="bi bi-eye"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Terms -->
+        <div class="col-12 d-flex gap-2 align-items-start">
+          <input type="checkbox" id="agreeTerms" required style="width:16px;height:16px;margin-top:2px;accent-color:var(--gold);cursor:pointer;flex-shrink:0;" />
+          <label for="agreeTerms" style="font-size:0.82rem;color:var(--text-body);cursor:pointer;line-height:1.5;margin:0;">
+            I agree to the <a href="#" style="color:var(--gold-dark);font-weight:500;">Terms & Conditions</a> and <a href="#" style="color:var(--gold-dark);font-weight:500;">Privacy Policy</a>
+          </label>
+        </div>
+
+        <div class="col-12">
+          <button type="submit" class="btn-gold" style="width:100%;text-align:center;padding:1rem;">
+            <i class="bi bi-person-plus me-2"></i>Create Account
+          </button>
+        </div>
+
+      </div>
+    </form>
+
+    <div class="auth-switch">
+      Already have an account? <a href="{% url 'login' %}">Sign in here</a>
+    </div>
+  </div>
+</div>
+{% include 'footer.html' %}
