@@ -126,6 +126,41 @@
                     </button>
                 </form>
             </div>
+
+            <!-- Registered Staff Members -->
+            <div class="admin-card" style="background: #fff; padding: 2rem; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-top: 4px solid var(--dark); margin-bottom: 2rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h4 style="font-family: var(--font-display); font-size: 1.4rem; margin: 0; font-weight: 600; color: var(--dark);">Registered Staff</h4>
+                    <span class="badge bg-dark" style="border-radius: 50px; padding: 0.35rem 0.75rem; font-size: 0.8rem; font-weight: 600;">{{ staff_members.count }} Total</span>
+                </div>
+                
+                <div class="custom-scroll-container" style="max-height: 350px; overflow-y: auto; padding-right: 5px;">
+                    {% for member in staff_members %}
+                    <div style="padding: 0.75rem 0; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 0.75rem;">
+                        <div style="width: 38px; height: 38px; border-radius: 50%; background: {% if member.is_superuser %}rgba(197,168,128,0.15){% else %}#f1f1f1{% endif %}; display: flex; align-items: center; justify-content: center; color: {% if member.is_superuser %}var(--gold){% else %}var(--dark){% endif %}; font-size: 1.1rem; flex-shrink: 0;">
+                            {% if member.is_superuser %}
+                            <i class="bi bi-shield-lock-fill"></i>
+                            {% else %}
+                            <i class="bi bi-person-badge-fill"></i>
+                            {% endif %}
+                        </div>
+                        <div style="flex-grow: 1; min-width: 0;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; gap: 0.5rem;">
+                                <strong style="font-size: 0.95rem; color: var(--dark); text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ member.username }}</strong>
+                                {% if member.is_superuser %}
+                                <span class="badge" style="background: rgba(197,168,128,0.2); color: var(--gold); border: 1px solid rgba(197,168,128,0.3); font-size: 0.7rem; font-weight: 700; padding: 0.15rem 0.4rem; border-radius: 4px;">Admin</span>
+                                {% else %}
+                                <span class="badge" style="background: #e9ecef; color: #495057; font-size: 0.7rem; font-weight: 700; padding: 0.15rem 0.4rem; border-radius: 4px;">Staff</span>
+                                {% endif %}
+                            </div>
+                            <span style="color: var(--text-muted); font-size: 0.8rem; display: block; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">{{ member.email|default:"No email" }}</span>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <p style="color: var(--text-muted); font-size: 0.9rem; text-align: center; padding: 1.5rem 0;">No staff registered.</p>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
 
         <!-- Main Area / Leave Requests and Attendance Session Logs -->

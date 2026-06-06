@@ -352,10 +352,12 @@ def admin_staff_management(request):
 
     attendances = StaffAttendance.objects.all().order_by('-date', '-login_time')
     leaves = LeaveRequest.objects.all().order_by('-applied_on')
+    staff_members = User.objects.filter(is_staff=True).order_by('-is_superuser', 'username')
 
     context = {
         'attendances': attendances,
         'leaves': leaves,
+        'staff_members': staff_members,
     }
     return render(request, 'admin_staff_management.html', context)
 
